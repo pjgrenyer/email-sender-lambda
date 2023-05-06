@@ -131,3 +131,6 @@ dist
 
 # Terraform
 *.terraform*
+
+# Misc
+**/response.json

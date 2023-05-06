@@ -6,3 +6,11 @@ variable "access_key" {
 variable "access_secret" {
   description = "AWS Access secret"
 }
+
+variable "lambda_timeout" {
+  default = "10" # seconds
+}
+
+variable "provisioned_concurrent_executions" {
+  default = "10"
+}
