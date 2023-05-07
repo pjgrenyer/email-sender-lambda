@@ -43,7 +43,7 @@ const buildTransports = (): Array<TransportFactory> => {
 
 const logger = new Logger({
     level: logLevel,
-    processors: [context(), timestamp(), process.env.NODE_ENV === 'production' ? json() : human()],
+    processors: buildProcessors(),
     transports: buildTransports(),
 });
 
