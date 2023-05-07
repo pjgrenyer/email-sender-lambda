@@ -18,12 +18,12 @@ const transporter = nodemailer.createTransport({
     SES: { ses, aws },
 });
 
-const sendEmail = async (to: string, subject: string, body: string, options?: { cc?: string; bcc?: string; from?: string }) => {
+const sendEmail = async (to: string[], cc: string[], bcc: string[], subject: string, body: string, from?: string) => {
     const message = {
-        from: options?.from ?? SMTP_FROM,
-        to: to,
-        cc: options?.cc,
-        bcc: options?.bcc,
+        from: from ?? SMTP_FROM,
+        to: to.join(','),
+        cc: cc.join(','),
+        bcc: bcc?.join(','),
         subject: subject,
         html: body,
     };
