@@ -2,7 +2,7 @@
     "Records": [
         {
             "messageId": "manual-invoke",
-            "body": "{\"key\":\"value\"}"
+            "body": "{\"toAddresses\": [\"paul.grenyer@gmail.com\"],\"ccAddresses\": [\"paulgrenyer@hotmail.com\"],\"bccAddresses\": [\"paul.grenyer@haven.com\"],\"subject\": \"Test Email\",\"body\": \"<h1>Test Email</h1>\",\"uniqueId\": \"uniqueId\"}"
         }
     ]
 }
