@@ -1,6 +1,7 @@
 {
     "Records": [
         {
+            "messageId": "manual-invoke",
             "body": "{\"key\":\"value\"}"
         }
     ]

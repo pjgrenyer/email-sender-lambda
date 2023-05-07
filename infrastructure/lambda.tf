@@ -20,7 +20,7 @@ resource "aws_lambda_function" "email_sender_lambda" {
   environment {
     variables = {
       NODE_ENV  = "production",
-      LOG_LEVEL = "info",
+      LOG_LEVEL = "debug",
     }
   }
 }

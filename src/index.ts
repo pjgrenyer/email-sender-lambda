@@ -1,18 +1,16 @@
-//import logger from './lib/logger';
+import logger from './lib/logger';
 import { Request } from './request';
 
 const handler = async (event: Request) => {
     try {
         for (const record of event.Records) {
-            console.log(record?.messageId);
             const body = JSON.parse(record?.body);
-            console.log(body);
-            //            logger.debug('Message:', report);
+            logger.debug(`Message received: ${record?.messageId}`, { context: 'handler', messageId: record?.messageId, body });
         }
 
         return { success: true };
     } catch (error: any) {
-        //logger.error(`Error: ${error}`, error);
+        logger.error(`Error: ${error}`, { context: 'handler', error });
         throw error;
     }
 };
