@@ -1,11 +1,13 @@
 import logger from './lib/logger';
-import { Request } from './request';
+import { processMessage } from './process-message';
+import { Message, Request } from './request';
 
 const handler = async (event: Request) => {
     try {
         for (const record of event.Records) {
-            const body = JSON.parse(record?.body);
-            logger.debug(`Message received: ${record?.messageId}`, { context: 'handler', messageId: record?.messageId, body });
+            const message: Message = JSON.parse(record?.body);
+            logger.debug(`Message received: ${record?.messageId}`, { context: 'handler', messageId: record?.messageId, body: message });
+            await processMessage(message);
         }
 
         return { success: true };

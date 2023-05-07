@@ -21,6 +21,7 @@ resource "aws_lambda_function" "email_sender_lambda" {
     variables = {
       NODE_ENV  = "production",
       LOG_LEVEL = "debug",
+      SMTP_FROM = var.ses_email_identity
     }
   }
 }
