@@ -41,7 +41,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "lambda_role_logs_policy" {
-  name   = "LambdaRolePolicy"
+  name   = "LambdaLogsPolicy"
   role   = aws_iam_role.lambda.id
   policy = <<EOF
 {
@@ -59,4 +59,17 @@ resource "aws_iam_role_policy" "lambda_role_logs_policy" {
   ]
 }
 EOF
+}
+
+data "aws_iam_policy_document" "lambda_role_ses_policy_document" {
+  statement {
+    actions   = ["ses:SendEmail", "ses:SendRawEmail"]
+    resources = [aws_ses_email_identity.email.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "lambda_role_ses_policy" {
+  name   = "AllowSNSPermissions"
+  role   = aws_iam_role.lambda.id
+  policy = data.aws_iam_policy_document.lambda_role_ses_policy_document.json
 }
