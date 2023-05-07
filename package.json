@@ -37,6 +37,7 @@
         "husky": "^8.0.3",
         "nodemailer": "^6.9.1",
         "tripitaka": "^3.0.6",
+        "tripitaka-datadog": "^1.0.3",
         "typescript": "^5.0.4"
     },
     "devDependencies": {
