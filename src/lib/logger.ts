@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { Level, Logger, TransportFactory, transports, processors, ProcessorFactory } from 'tripitaka';
-import { datadogProcessor, datadogTransport } from 'tripitaka-datadog';
+import { datadogTransport } from 'tripitaka-datadog';
 const { context, timestamp, json, human } = processors;
 
 const logLevel = Level.lookup(process.env.LOG_LEVEL?.toUpperCase() as string);
