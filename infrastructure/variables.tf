@@ -26,3 +26,5 @@ variable "ses_iam_policy" {
 variable "ses_iam_user" {
   default = "ses"
 }
+
+variable "datadog_api_key" {}
