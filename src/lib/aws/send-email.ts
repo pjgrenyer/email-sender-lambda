@@ -23,7 +23,7 @@ const sendEmail = async (to: string[], cc: string[], bcc: string[], subject: str
         from: from ?? SMTP_FROM,
         to: to.join(','),
         cc: cc.join(','),
-        bcc: bcc?.join(','),
+        bcc: bcc.join(','),
         subject: subject,
         html: body,
     };
