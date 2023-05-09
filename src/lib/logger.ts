@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { Level, Logger, TransportFactory, transports, processors, ProcessorFactory } from 'tripitaka';
-import { datadogTransport } from 'tripitaka-datadog';
+import { datadogProcessor, datadogTransport } from 'tripitaka-datadog';
 const { context, timestamp, json, human } = processors;
 
 const logLevel = Level.lookup(process.env.LOG_LEVEL?.toUpperCase() as string);
@@ -11,8 +11,8 @@ const buildProcessors = (): Array<ProcessorFactory> => {
     const ps: Array<ProcessorFactory> = [context(), timestamp()];
 
     /* istanbul ignore next */
-    if (process.env.NODE_ENV === 'production' && process.env.DATADOG_API_HOST) {
-        ps.push(json());
+    if (process.env.NODE_ENV === 'production' && process.env.DATADOG_API_KEY) {
+        ps.push(datadogProcessor());
     } else {
         ps.push(process.env.NODE_ENV === 'production' ? json() : human());
     }
@@ -24,7 +24,7 @@ const buildTransports = (): Array<TransportFactory> => {
     const ts: Array<TransportFactory> = [transports.stream({ threshold: logLevel })];
 
     /* istanbul ignore next */
-    if (process.env.NODE_ENV === 'production' && process.env.DATADOG_API_HOST) {
+    if (process.env.NODE_ENV === 'production' && process.env.DATADOG_API_KEY) {
         ts.push(
             datadogTransport({
                 apiKey: process.env.DATADOG_API_KEY as string,
@@ -33,7 +33,7 @@ const buildTransports = (): Array<TransportFactory> => {
                 ddsource: process.env.DATADOG_SOURCE as string,
                 ddtags: process.env.DATADOG_TAGS as string,
                 intakeRegion: 'eu',
-                threshold: Level.INFO,
+                threshold: logLevel,
             })
         );
     }

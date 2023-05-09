@@ -4,7 +4,7 @@ export interface Message {
     bccAddresses?: string[];
     subject: string;
     body: string;
-    uniqueId?: string;
+    uniqueId: string;
 }
 
 export interface RequestRecord {

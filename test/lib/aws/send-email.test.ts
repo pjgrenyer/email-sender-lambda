@@ -24,7 +24,7 @@ describe('Send email', () => {
     });
 
     it('should handle no email addresses', async () => {
-        await sendEmail([], [], [], '', '', '');
+        await sendEmail([], [], [], '', '', '', '');
 
         expect(mockSendMail).toBeCalledTimes(1);
         expect(mockSendMail).toBeCalledWith({
@@ -33,6 +33,7 @@ describe('Send email', () => {
             from: '',
             html: '',
             subject: '',
+            uniqueId: '',
             to: '',
         });
     });
@@ -44,6 +45,7 @@ describe('Send email', () => {
             ['email5@example.com', 'email6@example.com'],
             'subject',
             'body',
+            'uniqueId',
             'email7@example.com'
         );
 
@@ -54,12 +56,13 @@ describe('Send email', () => {
             from: 'email7@example.com',
             html: 'body',
             subject: 'subject',
+            uniqueId: 'uniqueId',
             to: 'email1@example.com,email2@example.com',
         });
     });
 
     it('should use default from addres if not supplied', async () => {
-        await sendEmail(['email1@example.com'], [], [], 'subject', 'body');
+        await sendEmail(['email1@example.com'], [], [], 'subject', 'body', 'uniqueId');
 
         expect(mockSendMail).toBeCalledTimes(1);
         expect(mockSendMail).toBeCalledWith({
@@ -68,6 +71,7 @@ describe('Send email', () => {
             from: 'from@example.com',
             html: 'body',
             subject: 'subject',
+            uniqueId: 'uniqueId',
             to: 'email1@example.com',
         });
     });
