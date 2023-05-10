@@ -7,6 +7,7 @@ const handler = async (event: Request) => {
     try {
         for (const record of event.Records) {
             const message: Message = JSON.parse(record?.body);
+            message.uniqueId = message.uniqueId ?? record?.messageId;
             logger.debug(`Message received: ${record?.messageId}`, { context: 'handler', messageId: record?.messageId, body: maskMessage(message) });
             await processMessage(message);
         }

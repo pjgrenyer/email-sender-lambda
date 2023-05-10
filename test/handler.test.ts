@@ -79,6 +79,32 @@ describe('handler', () => {
         expect(loggerSpy).toBeCalledWith('Error: Oops!', { context: 'handler', error: 'Oops!' });
     });
 
+    it('should replace missing uniqueId with messageId', async () => {
+        await handler({
+            Records: [
+                {
+                    messageId: 'messageId',
+                    body: JSON.stringify({
+                        toAddresses: ['email1@example.com'],
+                        ccAddresses: [],
+                        bccAddresses: [],
+                        subject: 'subject',
+                        body: 'body',
+                    }),
+                },
+            ],
+        } as Request);
+
+        expect(processMessage).toBeCalledWith({
+            bccAddresses: [],
+            body: 'body',
+            ccAddresses: [],
+            subject: 'subject',
+            toAddresses: ['email1@example.com'],
+            uniqueId: 'messageId',
+        });
+    });
+
     it('should call process for each message', async () => {
         await handler({
             Records: [
