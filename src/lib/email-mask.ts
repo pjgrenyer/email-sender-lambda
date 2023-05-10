@@ -14,3 +14,5 @@ export const maskEmailAddress = (emailAddress: string) => {
         return maskPart(p1) + '@' + maskPart(p2) + '.' + p3;
     });
 };
+
+export const maskEmailAddresses = (emailAddresses?: string[]) => emailAddresses?.map((email) => maskEmailAddress(email));
