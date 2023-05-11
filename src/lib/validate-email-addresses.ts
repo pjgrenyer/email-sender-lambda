@@ -1,10 +1,11 @@
 import Joi from 'joi';
+import { maskEmailAddress } from './email-mask';
 
 export const validateEmailAddresses = (toAddresses: string[], ccAddresses: string[], bccAddresses: string[]) => {
     const allEmails = [...toAddresses, ...ccAddresses, ...bccAddresses];
 
     allEmails.forEach((email) => {
-        if (!isValidEmail(email)) throw Error('One or more emails are invalid.');
+        if (!isValidEmail(email)) throw Error(`One or more emails are invalid: ${maskEmailAddress(email)}`);
     });
 };
 
