@@ -1,4 +1,4 @@
-import { validateEmailAddresses } from './../../../src/lib/validate-email-addresses';
+import { validateEmailAddresses } from './../../src/lib/validate-email-addresses';
 
 describe('validate email addresses', () => {
     it('should not throw if all emails are valid', () => {
