@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
     SES: { ses, aws },
 });
 
-const sendEmail = async (to: string[], cc: string[], bcc: string[], subject: string, body: string, uniqueId: string, from?: string) => {
+const sendEmail = async (to: string[], cc: string[], bcc: string[], subject: string, body: string, uniqueId: string, from?: string): Promise<string> => {
     const message = {
         from: from ?? SMTP_FROM,
         to: to.join(','),
@@ -36,7 +36,8 @@ const sendEmail = async (to: string[], cc: string[], bcc: string[], subject: str
         bcc: maskEmailAddresses(message.bcc.split(','))?.join(','),
         from: maskEmailAddresses(message.from.split(','))?.join(','),
     });
-    await transporter.sendMail(message);
+    const response = await transporter.sendMail(message);
+    return response?.response;
 };
 
 export default sendEmail;
