@@ -4,6 +4,7 @@ import { defaultProvider } from '@aws-sdk/credential-provider-node';
 const aws = require('@aws-sdk/client-ses');
 
 import logger from './../../lib/logger';
+import { maskEmailAddresses } from '../email-mask';
 
 const SMTP_FROM = process.env.SMTP_FROM as string;
 const AWS_REGION = process.env.AWS_REGION as string;
@@ -28,7 +29,13 @@ const sendEmail = async (to: string[], cc: string[], bcc: string[], subject: str
         html: body,
         uniqueId,
     };
-    logger.info(`Sending email: ${uniqueId}`, message);
+    logger.info(`Sending email: ${uniqueId}`, {
+        ...message,
+        to: maskEmailAddresses(message.to.split(','))?.join(','),
+        cc: maskEmailAddresses(message.cc.split(','))?.join(','),
+        bcc: maskEmailAddresses(message.bcc.split(','))?.join(','),
+        from: maskEmailAddresses(message.from.split(','))?.join(','),
+    });
     await transporter.sendMail(message);
 };
 
