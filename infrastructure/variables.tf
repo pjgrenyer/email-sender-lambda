@@ -27,4 +27,6 @@ variable "ses_iam_user" {
   default = "ses"
 }
 
-variable "datadog_api_key" {}
+variable "datadog_api_key" {
+  default = ""
+}
