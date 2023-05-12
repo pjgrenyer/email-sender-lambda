@@ -12,8 +12,8 @@
         "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts' './*.js' './*.json' '!./package-lock.json'",
         "lint": "eslint . --ext .ts",
         "package": "rimraf email-sender-lambda.zip && npm run build && npm ci --omit=dev && cd dist && zip -r ../email-sender-lambda.zip . && cd .. && zip email-sender-lambda.zip package.json && zip email-sender-lambda.zip -r node_modules",
-        "upload": "aws s3 cp email-sender-lambda.zip s3://email-sender-lambda/email-sender-lambda.zip",
-        "publish": "aws lambda update-function-code --function-name email-sender-lambda --s3-bucket email-sender-lambda --s3-key email-sender-lambda.zip",
+        "upload": "aws s3 cp email-sender-lambda.zip s3://email-sender-lambda-haven/email-sender-lambda.zip",
+        "publish": "aws lambda update-function-code --function-name email-sender-lambda --s3-bucket email-sender-lambda-haven --s3-key email-sender-lambda.zip",
         "package-upload-publish": "npm run package && npm run upload && npm run publish",
         "invoke": "aws lambda invoke --function-name email-sender-lambda --payload file://payload.json --cli-binary-format raw-in-base64-out response.json && more response.json"
     },

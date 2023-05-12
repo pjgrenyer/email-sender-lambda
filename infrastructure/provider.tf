@@ -10,7 +10,7 @@ terraform {
     organization = "Paul_Grenyer"
 
     workspaces {
-      name = "email-sender-lambda"
+      name = "email-sender-lambda-haven"
     }
   }
 }
