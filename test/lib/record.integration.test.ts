@@ -13,7 +13,7 @@ describe('Record integration tests', () => {
         expect(result).not.toBeUndefined();
     });
 
-    it.only('should update record with response', async () => {
+    it('should update record with response', async () => {
         const result = await recordEmailResponse('uniqueId', 'Response');
         expect(result).not.toBeUndefined();
     });
