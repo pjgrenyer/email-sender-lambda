@@ -14,8 +14,8 @@ resource "aws_dynamodb_table" "send_email_lambda" {
     type = "S"
   }
 
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
+  # ttl {
+  #   attribute_name = "TimeToExist"
+  #   enabled        = false
+  # }
 }

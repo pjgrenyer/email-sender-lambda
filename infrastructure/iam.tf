@@ -61,6 +61,26 @@ resource "aws_iam_role_policy" "lambda_role_logs_policy" {
 EOF
 }
 
+resource "aws_iam_role_policy" "lambda_role_dynamodb_policy" {
+  name   = "LambdaDynamoDbPolicy"
+  role   = aws_iam_role.lambda.id
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "dynamodb:UpdateItem",
+        "dynamodb:PutItem"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 data "aws_iam_policy_document" "lambda_role_ses_policy_document" {
   statement {
     actions   = ["ses:SendEmail", "ses:SendRawEmail"]
