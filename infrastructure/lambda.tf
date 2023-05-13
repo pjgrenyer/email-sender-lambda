@@ -19,14 +19,15 @@ resource "aws_lambda_function" "email_sender_lambda" {
 
   environment {
     variables = {
-      NODE_ENV         = "production",
-      LOG_LEVEL        = "debug",
-      SMTP_FROM        = var.ses_email_identity
-      DATADOG_API_KEY  = var.datadog_api_key,
-      DATADOG_API_HOST = "example.com"
-      DATADOG_SERVICE  = "email-sender-lambda",
-      DATADOG_SOURCE   = "email-sender-lambda",
-      DATADOG_TAGS     = "email-sender-lambda",
+      NODE_ENV            = "production",
+      LOG_LEVEL           = "debug",
+      SMTP_FROM           = var.ses_email_identity
+      DATADOG_API_KEY     = var.datadog_api_key,
+      DATADOG_API_HOST    = "example.com"
+      DATADOG_SERVICE     = "email-sender-lambda",
+      DATADOG_SOURCE      = "email-sender-lambda",
+      DATADOG_TAGS        = "email-sender-lambda",
+      DYNAMODB_TABLE_NAME = "SendEmailLambda",
     }
   }
 }
