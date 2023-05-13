@@ -42,7 +42,7 @@ describe('record', () => {
     });
 
     it('should record email', async () => {
-        const result = await recordEmail(
+        await recordEmail(
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
@@ -71,7 +71,7 @@ describe('record', () => {
     });
 
     it('should record response', async () => {
-        const result = await recordEmailResponse('uniqueId', 'response');
+        await recordEmailResponse('uniqueId', 'response');
         expect(mockSend).toBeCalledTimes(1);
         expect(mockSend).toBeCalledWith({
             _params: {
