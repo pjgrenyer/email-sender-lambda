@@ -70,6 +70,24 @@ describe('record', () => {
         expect(mockDestroy).toBeCalledTimes(1);
     });
 
+    it('should not record email if table not set', async () => {
+        const tableName = process.env.DYNAMODB_TABLE_NAME;
+        delete process.env.DYNAMODB_TABLE_NAME;
+        try {
+            await recordEmail(
+                ['email1@example.com', 'email2@example.com'],
+                ['email3@example.com', 'email4@example.com'],
+                ['email5@example.com', 'email6@example.com'],
+                'subject',
+                'body',
+                'uniqueId'
+            );
+            expect(mockSend).not.toBeCalled();
+        } finally {
+            process.env.DYNAMODB_TABLE_NAME = tableName;
+        }
+    });
+
     it('should record response', async () => {
         await recordEmailResponse('uniqueId', 'response');
         expect(mockSend).toBeCalledTimes(1);
@@ -85,5 +103,16 @@ describe('record', () => {
         });
 
         expect(mockDestroy).toBeCalledTimes(1);
+    });
+
+    it('should not record response if table not set', async () => {
+        const tableName = process.env.DYNAMODB_TABLE_NAME;
+        delete process.env.DYNAMODB_TABLE_NAME;
+        try {
+            await recordEmailResponse('uniqueId', 'response');
+            expect(mockSend).not.toBeCalled();
+        } finally {
+            process.env.DYNAMODB_TABLE_NAME = tableName;
+        }
     });
 });

@@ -4,6 +4,9 @@ import { maskEmailAddresses } from './email-mask';
 const AWS_REGION = process.env.AWS_REGION as string;
 
 export const recordEmail = async (to: string[], cc: string[], bcc: string[], subject: string, body: string, uniqueId: string) => {
+    if (!process.env.DYNAMODB_TABLE_NAME) {
+        return;
+    }
     const client = new DynamoDBClient({ region: AWS_REGION });
     try {
         const params = {
@@ -31,7 +34,7 @@ export const recordEmail = async (to: string[], cc: string[], bcc: string[], sub
                 },
             },
             ReturnConsumedCapacity: 'TOTAL',
-            TableName: 'SendEmailLambda',
+            TableName: process.env.DYNAMODB_TABLE_NAME,
         };
 
         const command = new PutItemCommand(params);
@@ -42,6 +45,9 @@ export const recordEmail = async (to: string[], cc: string[], bcc: string[], sub
 };
 
 export const recordEmailResponse = async (uniqueId: string, response: string) => {
+    if (!process.env.DYNAMODB_TABLE_NAME) {
+        return;
+    }
     const client = new DynamoDBClient({ region: AWS_REGION });
     try {
         const params = {
@@ -62,7 +68,7 @@ export const recordEmailResponse = async (uniqueId: string, response: string) =>
                 },
             },
             ReturnConsumedCapacity: 'TOTAL',
-            TableName: 'SendEmailLambda',
+            TableName: process.env.DYNAMODB_TABLE_NAME,
             UpdateExpression: 'SET #R = :r',
         };
 
