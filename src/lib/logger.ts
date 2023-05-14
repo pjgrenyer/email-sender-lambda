@@ -51,6 +51,9 @@ const buildTransports = (): Array<TransportFactory> => {
                 {
                     endpoint: process.env.SUMO_ENDPOINT,
                     sourceName: process.env.SUMO_SERVICE_NAME,
+                    clientUrl: process.env.SUMO_CLIENT_URL,
+                    hostName: process.env.SUMO_HOST_NAME,
+                    sourceCategory: process.env.SUMO_SOURCE_CATEGORY,
                     sessionKey: v4(),
                     onError,
                 },

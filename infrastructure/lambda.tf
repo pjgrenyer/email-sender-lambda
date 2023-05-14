@@ -19,17 +19,20 @@ resource "aws_lambda_function" "email_sender_lambda" {
 
   environment {
     variables = {
-      NODE_ENV            = "production",
-      LOG_LEVEL           = "debug",
-      SMTP_FROM           = var.ses_email_identity
-      DATADOG_API_KEY     = var.datadog_api_key,
-      DATADOG_API_HOST    = "example.com"
-      DATADOG_SERVICE     = "email-sender-lambda",
-      DATADOG_SOURCE      = "email-sender-lambda",
-      DATADOG_TAGS        = "email-sender-lambda",
-      SUMO_ENDPOINT       = var.sumo_endpoint
-      SUMO_SERVICE_NAME   = "email-sender-lambda",
-      DYNAMODB_TABLE_NAME = var.dynamodb_table_name,
+      NODE_ENV             = "production",
+      LOG_LEVEL            = "debug",
+      SMTP_FROM            = var.ses_email_identity
+      DATADOG_API_KEY      = var.datadog_api_key,
+      DATADOG_API_HOST     = "example.com"
+      DATADOG_SERVICE      = "email-sender-lambda",
+      DATADOG_SOURCE       = "email-sender-lambda",
+      DATADOG_TAGS         = "email-sender-lambda",
+      SUMO_ENDPOINT        = var.sumo_endpoint
+      SUMO_SERVICE_NAME    = "email-sender-lambda",
+      SUMO_CLIENT_URL      = "example.com",
+      SUMO_HOST_NAME       = "email-sender-lambda"
+      SUMO_SOURCE_CATEGORY = "email-sender-lambda"
+      DYNAMODB_TABLE_NAME  = var.dynamodb_table_name,
     }
   }
 }
