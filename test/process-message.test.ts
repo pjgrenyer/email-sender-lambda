@@ -12,7 +12,7 @@ describe('process message', () => {
         jest.resetAllMocks();
     });
 
-    it('should map message', async () => {
+    it('should map message with subject and html', async () => {
         await processMessage({
             toAddresses: ['email1@example.com', 'email2@example.com'],
             ccAddresses: ['email3@example.com', 'email4@example.com'],
@@ -30,7 +30,33 @@ describe('process message', () => {
             'uniqueId',
             undefined,
             'subject',
-            'html'
+            'html',
+            undefined,
+            undefined
+        );
+    });
+
+    it('should map message with templateId and data', async () => {
+        await processMessage({
+            toAddresses: ['email1@example.com', 'email2@example.com'],
+            ccAddresses: ['email3@example.com', 'email4@example.com'],
+            bccAddresses: ['email5@example.com', 'email6@example.com'],
+            data: [{ key: 'NAME', value: 'Paul' }],
+            templateId: 'templateId',
+            uniqueId: 'uniqueId',
+        });
+
+        expect(sendEmail).toBeCalledTimes(1);
+        expect(sendEmail).toBeCalledWith(
+            ['email1@example.com', 'email2@example.com'],
+            ['email3@example.com', 'email4@example.com'],
+            ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
+            undefined,
+            undefined,
+            undefined,
+            'templateId',
+            [{ key: 'NAME', value: 'Paul' }]
         );
     });
 
@@ -42,7 +68,7 @@ describe('process message', () => {
         });
 
         expect(sendEmail).toBeCalledTimes(1);
-        expect(sendEmail).toBeCalledWith([], [], [], 'uniqueId', undefined, 'subject', 'html');
+        expect(sendEmail).toBeCalledWith([], [], [], 'uniqueId', undefined, 'subject', 'html', undefined, undefined);
     });
 
     it('should validate all email addresses', async () => {

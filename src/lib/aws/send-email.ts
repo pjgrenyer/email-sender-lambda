@@ -19,7 +19,17 @@ const transporter = nodemailer.createTransport({
     SES: { ses, aws },
 });
 
-const sendEmail = async (to: string[], cc: string[], bcc: string[], uniqueId: string, from?: string, subject?: string, body?: string): Promise<string> => {
+const sendEmail = async (
+    to: string[],
+    cc: string[],
+    bcc: string[],
+    uniqueId: string,
+    from?: string,
+    subject?: string,
+    body?: string,
+    templateId?: string,
+    data?: any
+): Promise<string> => {
     const message = {
         from: from ?? SMTP_FROM,
         to: to.join(','),
