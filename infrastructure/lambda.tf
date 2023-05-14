@@ -27,7 +27,9 @@ resource "aws_lambda_function" "email_sender_lambda" {
       DATADOG_SERVICE     = "email-sender-lambda",
       DATADOG_SOURCE      = "email-sender-lambda",
       DATADOG_TAGS        = "email-sender-lambda",
-      DYNAMODB_TABLE_NAME = "SendEmailLambda",
+      SUMO_ENDPOINT       = var.sumo_endpoint
+      SUMO_SERVICE_NAME   = "email-sender-lambda",
+      DYNAMODB_TABLE_NAME = var.dynamodb_table_name,
     }
   }
 }
