@@ -10,7 +10,7 @@ export const processMessage = async (message: Message) => {
     const bccAddresses = message.bccAddresses ?? [];
     const uniqueId = message.uniqueId;
     try {
-        await recordEmail(toAddresses, ccAddresses, bccAddresses, uniqueId, message.subject, message.html);
+        await recordEmail(toAddresses, ccAddresses, bccAddresses, uniqueId, message.subject, message.html, message.templateId, message.data);
         validateEmailAddresses(toAddresses, ccAddresses, bccAddresses);
         const response = await sendEmail(toAddresses, ccAddresses, bccAddresses, uniqueId, undefinedFromAddress, message.subject, message?.html);
         await recordEmailResponse(uniqueId, response);

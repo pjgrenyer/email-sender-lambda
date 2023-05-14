@@ -83,7 +83,7 @@ describe('record', () => {
             undefined,
             undefined,
             'templateId',
-            { key: "value" }
+            { key: 'value' }
         );
         expect(mockSend).toBeCalledTimes(1);
         expect(mockSend).toBeCalledWith({

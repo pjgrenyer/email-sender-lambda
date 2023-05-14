@@ -33,10 +33,10 @@ export const recordEmail = async (to: string[], cc: string[], bcc: string[], uni
                     S: html ?? '',
                 },
                 TemplateId: {
-                    S: templateId ?? ''
+                    S: templateId ?? '',
                 },
                 Data: {
-                    S: data ? JSON.stringify(data) : '' 
+                    S: data ? JSON.stringify(data) : '',
                 },
             },
             ReturnConsumedCapacity: 'TOTAL',
