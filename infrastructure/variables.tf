@@ -30,3 +30,11 @@ variable "ses_iam_user" {
 variable "datadog_api_key" {
   default = ""
 }
+
+variable "sumo_endpoint" {
+  default = ""
+}
+
+variable "dynamodb_table_name" {
+  default = ""
+}
