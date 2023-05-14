@@ -3,7 +3,7 @@ export interface Message {
     ccAddresses?: string[];
     bccAddresses?: string[];
     subject: string;
-    body: string;
+    html: string;
     uniqueId: string;
 }
 

@@ -9,9 +9,9 @@ export const processMessage = async (message: Message) => {
     const bccAddresses = message.bccAddresses ?? [];
     const uniqueId = message.uniqueId;
     try {
-        await recordEmail(toAddresses, ccAddresses, bccAddresses, message.subject, message.body, uniqueId);
+        await recordEmail(toAddresses, ccAddresses, bccAddresses, message.subject, message.html, uniqueId);
         validateEmailAddresses(toAddresses, ccAddresses, bccAddresses);
-        const response = await sendEmail(toAddresses, ccAddresses, bccAddresses, message.subject, message.body, uniqueId);
+        const response = await sendEmail(toAddresses, ccAddresses, bccAddresses, message.subject, message.html, uniqueId);
         await recordEmailResponse(uniqueId, response);
     } catch (error: any) {
         await recordEmailResponse(uniqueId, JSON.stringify(error));

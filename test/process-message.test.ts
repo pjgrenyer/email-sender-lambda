@@ -18,7 +18,7 @@ describe('process message', () => {
             ccAddresses: ['email3@example.com', 'email4@example.com'],
             bccAddresses: ['email5@example.com', 'email6@example.com'],
             subject: 'subject',
-            body: 'body',
+            html: 'html',
             uniqueId: 'uniqueId',
         });
 
@@ -28,7 +28,7 @@ describe('process message', () => {
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
             'subject',
-            'body',
+            'html',
             'uniqueId'
         );
     });
@@ -36,12 +36,12 @@ describe('process message', () => {
     it('should convert null emails to empty array', async () => {
         await processMessage({
             subject: 'subject',
-            body: 'body',
+            html: 'html',
             uniqueId: 'uniqueId',
         });
 
         expect(sendEmail).toBeCalledTimes(1);
-        expect(sendEmail).toBeCalledWith([], [], [], 'subject', 'body', 'uniqueId');
+        expect(sendEmail).toBeCalledWith([], [], [], 'subject', 'html', 'uniqueId');
     });
 
     it('should validate all email addresses', async () => {
@@ -50,7 +50,7 @@ describe('process message', () => {
             ccAddresses: ['email3@example.com', 'email4@example.com'],
             bccAddresses: ['email5@example.com', 'email6@example.com'],
             subject: 'subject',
-            body: 'body',
+            html: 'html',
             uniqueId: 'uniqueId',
         });
 
@@ -69,7 +69,7 @@ describe('process message', () => {
                 ccAddresses: ['email3@example.com', 'email4@example.com'],
                 bccAddresses: ['email5@example.com', 'email6@example.com'],
                 subject: 'subject',
-                body: 'body',
+                html: 'html',
                 uniqueId: 'uniqueId',
             });
 
@@ -79,7 +79,7 @@ describe('process message', () => {
                 ['email3@example.com', 'email4@example.com'],
                 ['email5@example.com', 'email6@example.com'],
                 'subject',
-                'body',
+                'html',
                 'uniqueId'
             );
         });
@@ -93,7 +93,7 @@ describe('process message', () => {
                 ccAddresses: ['email3@example.com', 'email4@example.com'],
                 bccAddresses: ['email5@example.com', 'email6@example.com'],
                 subject: 'subject',
-                body: 'body',
+                html: 'html',
                 uniqueId: 'uniqueId',
             });
 
@@ -113,7 +113,7 @@ describe('process message', () => {
                     ccAddresses: ['email3@example.com', 'email4@example.com'],
                     bccAddresses: ['email5@example.com', 'email6@example.com'],
                     subject: 'subject',
-                    body: 'body',
+                    html: 'html',
                     uniqueId: 'uniqueId',
                 });
             } catch (error: any) {
