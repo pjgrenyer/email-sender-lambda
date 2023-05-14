@@ -77,6 +77,21 @@ describe('Send email', () => {
         });
     });
 
+    it('should build template form supplied data', async () => {
+        await sendEmail(['email1@example.com'], [], [], 'uniqueId', undefined, 'subject', undefined, 'age_and_name.html', [{ key: 'user', value: { name: 'Charlotte', age: 41 } }]);
+
+        expect(mockSendMail).toBeCalledTimes(1);
+        expect(mockSendMail).toBeCalledWith({
+            bcc: '',
+            cc: '',
+            from: 'from@example.com',
+            html: '<h1>Hello Charlotte</h1><p>Age: 41 </p>',
+            subject: 'subject',
+            uniqueId: 'uniqueId',
+            to: 'email1@example.com',
+        });
+    });
+
     it('should mask email addresses in log', async () => {
         const loggerSpy = jest.spyOn(logger, 'info');
 
