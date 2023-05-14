@@ -1,4 +1,4 @@
-import sendEmail from '../src/lib/aws/send-email';
+import { sendEmail } from '../src/lib/aws/send-email';
 import { recordEmail, recordEmailResponse } from '../src/lib/recorder';
 import { validateEmailAddresses } from '../src/lib/validate-email-addresses';
 import { processMessage } from '../src/process-message';

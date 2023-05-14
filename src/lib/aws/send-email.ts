@@ -5,6 +5,8 @@ const aws = require('@aws-sdk/client-ses');
 
 import logger from './../../lib/logger';
 import { maskEmailAddresses } from '../email-mask';
+import { render, Data as EjsData } from 'ejs';
+import { Data } from '../../request';
 
 const SMTP_FROM = process.env.SMTP_FROM as string;
 const AWS_REGION = process.env.AWS_REGION as string;
@@ -19,7 +21,7 @@ const transporter = nodemailer.createTransport({
     SES: { ses, aws },
 });
 
-const sendEmail = async (
+export const sendEmail = async (
     to: string[],
     cc: string[],
     bcc: string[],
@@ -28,7 +30,7 @@ const sendEmail = async (
     subject?: string,
     body?: string,
     templateId?: string,
-    data?: any
+    data?: Data[]
 ): Promise<string> => {
     const message = {
         from: from ?? SMTP_FROM,
@@ -36,7 +38,7 @@ const sendEmail = async (
         cc: cc.join(','),
         bcc: bcc.join(','),
         subject: subject,
-        html: body,
+        html: !templateId ? body : await buildTemplate(templateId, data),
         uniqueId,
     };
     logger.info(`Sending email: ${uniqueId}`, {
@@ -50,4 +52,13 @@ const sendEmail = async (
     return response?.response;
 };
 
-export default sendEmail;
+const buildTemplate = async (templateId: string, data?: Data[]): Promise<string> => {
+    const template = await getTemplate(templateId);
+    const context = {} as EjsData;
+    data?.forEach((item) => (context[item.key] = item.value));
+    return render(template, context);
+};
+
+const getTemplate = async (templateId: string): Promise<string> => {
+    return '<h1>Hello <%= user.name %></h1><p>Age: <%= user.age %> </p>';
+};

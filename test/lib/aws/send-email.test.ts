@@ -1,5 +1,5 @@
 import logger from '../../../src/lib/logger';
-import sendEmail from './../../../src/lib/aws/send-email';
+import { sendEmail } from './../../../src/lib/aws/send-email';
 
 const mockSendMail = jest.fn();
 
