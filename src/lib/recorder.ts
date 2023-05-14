@@ -3,7 +3,7 @@ import { maskEmailAddresses } from './email-mask';
 
 const AWS_REGION = process.env.AWS_REGION as string;
 
-export const recordEmail = async (to: string[], cc: string[], bcc: string[], uniqueId: string, subject?: string, body?: string) => {
+export const recordEmail = async (to: string[], cc: string[], bcc: string[], uniqueId: string, subject?: string, html?: string, templateId?: string, data?: any) => {
     if (!process.env.DYNAMODB_TABLE_NAME) {
         return;
     }
@@ -29,8 +29,14 @@ export const recordEmail = async (to: string[], cc: string[], bcc: string[], uni
                 Subject: {
                     S: subject ?? '',
                 },
-                Body: {
-                    S: body ?? '',
+                Html: {
+                    S: html ?? '',
+                },
+                TemplateId: {
+                    S: templateId ?? ''
+                },
+                Data: {
+                    S: data ? JSON.stringify(data) : '' 
                 },
             },
             ReturnConsumedCapacity: 'TOTAL',
