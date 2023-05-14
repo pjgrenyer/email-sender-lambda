@@ -27,9 +27,10 @@ describe('process message', () => {
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
+            undefined,
             'subject',
-            'html',
-            'uniqueId'
+            'html'
         );
     });
 
@@ -41,7 +42,7 @@ describe('process message', () => {
         });
 
         expect(sendEmail).toBeCalledTimes(1);
-        expect(sendEmail).toBeCalledWith([], [], [], 'subject', 'html', 'uniqueId');
+        expect(sendEmail).toBeCalledWith([], [], [], 'uniqueId', undefined, 'subject', 'html');
     });
 
     it('should validate all email addresses', async () => {
@@ -78,9 +79,9 @@ describe('process message', () => {
                 ['email1@example.com', 'email2@example.com'],
                 ['email3@example.com', 'email4@example.com'],
                 ['email5@example.com', 'email6@example.com'],
+                'uniqueId',
                 'subject',
-                'html',
-                'uniqueId'
+                'html'
             );
         });
 

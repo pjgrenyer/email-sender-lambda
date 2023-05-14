@@ -44,10 +44,10 @@ describe('Send email', () => {
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
-            'subject',
-            'body',
             'uniqueId',
-            'email7@example.com'
+            'email7@example.com',
+            'subject',
+            'body'
         );
 
         expect(mockSendMail).toBeCalledTimes(1);
@@ -63,7 +63,7 @@ describe('Send email', () => {
     });
 
     it('should use default from addres if not supplied', async () => {
-        await sendEmail(['email1@example.com'], [], [], 'subject', 'body', 'uniqueId');
+        await sendEmail(['email1@example.com'], [], [], 'uniqueId', undefined, 'subject', 'body');
 
         expect(mockSendMail).toBeCalledTimes(1);
         expect(mockSendMail).toBeCalledWith({
@@ -84,10 +84,10 @@ describe('Send email', () => {
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
-            'subject',
-            'body',
             'uniqueId',
-            'email7@example.com'
+            'email7@example.com',
+            'subject',
+            'body'
         );
 
         expect(loggerSpy).toBeCalledTimes(1);

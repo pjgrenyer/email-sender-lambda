@@ -46,9 +46,9 @@ describe('record', () => {
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
             'subject',
-            'body',
-            'uniqueId'
+            'body'
         );
         expect(mockSend).toBeCalledTimes(1);
         expect(mockSend).toBeCalledWith({
@@ -78,9 +78,9 @@ describe('record', () => {
                 ['email1@example.com', 'email2@example.com'],
                 ['email3@example.com', 'email4@example.com'],
                 ['email5@example.com', 'email6@example.com'],
+                'uniqueId',
                 'subject',
-                'body',
-                'uniqueId'
+                'body'
             );
             expect(mockSend).not.toBeCalled();
         } finally {
