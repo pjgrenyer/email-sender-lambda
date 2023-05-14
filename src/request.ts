@@ -9,9 +9,7 @@ export interface Message {
     ccAddresses?: string[];
     bccAddresses?: string[];
     subject?: string;
-    html?: string;
-    templateId?: string;
-    data?: Data[];
+    body: { html: string } | { templateId: string; data?: Data[] };
     uniqueId: string;
 }
 

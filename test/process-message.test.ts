@@ -18,7 +18,7 @@ describe('process message', () => {
             ccAddresses: ['email3@example.com', 'email4@example.com'],
             bccAddresses: ['email5@example.com', 'email6@example.com'],
             subject: 'subject',
-            html: 'html',
+            body: { html: 'html' },
             uniqueId: 'uniqueId',
         });
 
