@@ -44,9 +44,9 @@ const buildTransports = (): Array<TransportFactory> => {
                 threshold: logLevel,
             })
         );
-    /* istanbul ignore next */
+        /* istanbul ignore next */
     } else if (process.env.NODE_ENV === 'production' && process.env.SUMO_ENDPOINT) {
-       ts.push(
+        ts.push(
             sumoLogicTransport(
                 {
                     endpoint: process.env.SUMO_ENDPOINT,
