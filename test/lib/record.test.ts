@@ -41,26 +41,63 @@ describe('record', () => {
         jest.resetAllMocks();
     });
 
-    it('should record email', async () => {
+    it('should record email with subject and html', async () => {
         await recordEmail(
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
             'subject',
-            'body',
-            'uniqueId'
+            'html',
+            undefined,
+            undefined
         );
         expect(mockSend).toBeCalledTimes(1);
         expect(mockSend).toBeCalledWith({
             _params: {
                 Item: {
                     Bcc: { S: 'e*****5@e******e.com,e*****6@e******e.com' },
-                    Body: { S: 'body' },
+                    Html: { S: 'html' },
                     Cc: { S: 'e*****3@e******e.com,e*****4@e******e.com' },
                     RecordType: { S: 'Email' },
                     Subject: { S: 'subject' },
                     To: { S: 'e*****1@e******e.com,e*****2@e******e.com' },
                     UniqueId: { S: 'uniqueId' },
+                    TemplateId: { S: '' },
+                    Data: { S: '' },
+                },
+                ReturnConsumedCapacity: 'TOTAL',
+                TableName: 'SendEmailLambda',
+            },
+        });
+
+        expect(mockDestroy).toBeCalledTimes(1);
+    });
+
+    it('should record email with templateId and data', async () => {
+        await recordEmail(
+            ['email1@example.com', 'email2@example.com'],
+            ['email3@example.com', 'email4@example.com'],
+            ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
+            undefined,
+            undefined,
+            'templateId',
+            { key: 'value' }
+        );
+        expect(mockSend).toBeCalledTimes(1);
+        expect(mockSend).toBeCalledWith({
+            _params: {
+                Item: {
+                    Bcc: { S: 'e*****5@e******e.com,e*****6@e******e.com' },
+                    Html: { S: '' },
+                    Cc: { S: 'e*****3@e******e.com,e*****4@e******e.com' },
+                    RecordType: { S: 'Email' },
+                    Subject: { S: '' },
+                    To: { S: 'e*****1@e******e.com,e*****2@e******e.com' },
+                    UniqueId: { S: 'uniqueId' },
+                    TemplateId: { S: 'templateId' },
+                    Data: { S: '{"key":"value"}' },
                 },
                 ReturnConsumedCapacity: 'TOTAL',
                 TableName: 'SendEmailLambda',
@@ -78,9 +115,9 @@ describe('record', () => {
                 ['email1@example.com', 'email2@example.com'],
                 ['email3@example.com', 'email4@example.com'],
                 ['email5@example.com', 'email6@example.com'],
+                'uniqueId',
                 'subject',
-                'body',
-                'uniqueId'
+                'html'
             );
             expect(mockSend).not.toBeCalled();
         } finally {

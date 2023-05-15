@@ -26,7 +26,7 @@ describe('handler', () => {
                         ccAddresses: ['email3@example.com', 'email4@example.com'],
                         bccAddresses: ['email5@example.com', 'email6@example.com'],
                         subject: 'subject',
-                        body: 'body',
+                        html: 'html',
                         uniqueId: 'uniqueId',
                     }),
                 },
@@ -37,11 +37,49 @@ describe('handler', () => {
         expect(loggerSpy).toBeCalledWith('Message received: messageId', {
             body: {
                 bccAddresses: ['e*****5@e******e.com', 'e*****6@e******e.com'],
-                body: 'body',
+                html: 'html',
                 ccAddresses: ['e*****3@e******e.com', 'e*****4@e******e.com'],
                 subject: 'subject',
                 toAddresses: ['e*****1@e******e.com', 'e*****2@e******e.com'],
                 uniqueId: 'uniqueId',
+            },
+            context: 'handler',
+            messageId: 'messageId',
+        });
+    });
+
+    it('should log message templateId and Data', async () => {
+        const loggerSpy = jest.spyOn(logger, 'debug');
+        await handler({
+            Records: [
+                {
+                    messageId: 'messageId',
+                    body: JSON.stringify({
+                        toAddresses: ['email1@example.com', 'email2@example.com'],
+                        ccAddresses: ['email3@example.com', 'email4@example.com'],
+                        bccAddresses: ['email5@example.com', 'email6@example.com'],
+                        templateId: 'templateId',
+                        data: [{ key: 'NAME', value: 'Paul' }],
+                        uniqueId: 'uniqueId',
+                    }),
+                },
+            ],
+        } as Request);
+
+        expect(loggerSpy).toBeCalledTimes(1);
+        expect(loggerSpy).toBeCalledWith('Message received: messageId', {
+            body: {
+                bccAddresses: ['e*****5@e******e.com', 'e*****6@e******e.com'],
+                ccAddresses: ['e*****3@e******e.com', 'e*****4@e******e.com'],
+                toAddresses: ['e*****1@e******e.com', 'e*****2@e******e.com'],
+                uniqueId: 'uniqueId',
+                data: [
+                    {
+                        key: 'NAME',
+                        value: 'Paul',
+                    },
+                ],
+                templateId: 'templateId',
             },
             context: 'handler',
             messageId: 'messageId',
@@ -65,7 +103,7 @@ describe('handler', () => {
                             ccAddresses: [],
                             bccAddresses: [],
                             subject: 'subject',
-                            body: 'body',
+                            html: 'html',
                             uniqueId: 'uniqueId',
                         }),
                     },
@@ -89,7 +127,7 @@ describe('handler', () => {
                         ccAddresses: [],
                         bccAddresses: [],
                         subject: 'subject',
-                        body: 'body',
+                        html: 'html',
                     }),
                 },
             ],
@@ -97,7 +135,7 @@ describe('handler', () => {
 
         expect(processMessage).toBeCalledWith({
             bccAddresses: [],
-            body: 'body',
+            html: 'html',
             ccAddresses: [],
             subject: 'subject',
             toAddresses: ['email1@example.com'],
@@ -115,7 +153,7 @@ describe('handler', () => {
                         ccAddresses: [],
                         bccAddresses: [],
                         subject: 'subject',
-                        body: 'body',
+                        html: 'html',
                         uniqueId: 'uniqueId',
                     }),
                 },
@@ -126,7 +164,7 @@ describe('handler', () => {
                         ccAddresses: [],
                         bccAddresses: [],
                         subject: 'subject',
-                        body: 'body',
+                        html: 'html',
                         uniqueId: 'uniqueId',
                     }),
                 },
@@ -134,7 +172,7 @@ describe('handler', () => {
         } as Request);
 
         expect(processMessage).toBeCalledTimes(2);
-        expect(processMessage).nthCalledWith(1, { bccAddresses: [], body: 'body', ccAddresses: [], subject: 'subject', toAddresses: ['email1@example.com'], uniqueId: 'uniqueId' });
-        expect(processMessage).nthCalledWith(2, { bccAddresses: [], body: 'body', ccAddresses: [], subject: 'subject', toAddresses: ['email2@example.com'], uniqueId: 'uniqueId' });
+        expect(processMessage).nthCalledWith(1, { bccAddresses: [], html: 'html', ccAddresses: [], subject: 'subject', toAddresses: ['email1@example.com'], uniqueId: 'uniqueId' });
+        expect(processMessage).nthCalledWith(2, { bccAddresses: [], html: 'html', ccAddresses: [], subject: 'subject', toAddresses: ['email2@example.com'], uniqueId: 'uniqueId' });
     });
 });

@@ -5,6 +5,12 @@ resource "aws_s3_object" "email_sender_lambda" {
   source = "lambdas/email-sender-lambda.zip"
 }
 
+resource "aws_s3_object" "age_and_name_template" {
+  bucket = aws_s3_bucket.email_sender_lambda.id
+  key    = "templates/age_and_name.html"
+  source = "templates/age_and_name.html"
+}
+
 resource "aws_lambda_function" "email_sender_lambda" {
   s3_bucket     = aws_s3_bucket.email_sender_lambda.id
   s3_key        = aws_s3_object.email_sender_lambda.key
@@ -33,6 +39,8 @@ resource "aws_lambda_function" "email_sender_lambda" {
       SUMO_HOST_NAME       = "email-sender-lambda"
       SUMO_SOURCE_CATEGORY = "email-sender-lambda"
       DYNAMODB_TABLE_NAME  = var.dynamodb_table_name,
+      TEMPLATE_BUCKET_NAME = aws_s3_bucket.email_sender_lambda.id,
+      TEMPLATE_BUCKET_PATH = "templates",
     }
   }
 }

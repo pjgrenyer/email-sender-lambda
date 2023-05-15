@@ -1,4 +1,4 @@
-import sendEmail from '../src/lib/aws/send-email';
+import { sendEmail } from '../src/lib/aws/send-email';
 import { recordEmail, recordEmailResponse } from '../src/lib/recorder';
 import { validateEmailAddresses } from '../src/lib/validate-email-addresses';
 import { processMessage } from '../src/process-message';
@@ -12,13 +12,13 @@ describe('process message', () => {
         jest.resetAllMocks();
     });
 
-    it('should map message', async () => {
+    it('should map message with subject and html', async () => {
         await processMessage({
             toAddresses: ['email1@example.com', 'email2@example.com'],
             ccAddresses: ['email3@example.com', 'email4@example.com'],
             bccAddresses: ['email5@example.com', 'email6@example.com'],
             subject: 'subject',
-            body: 'body',
+            html: 'html',
             uniqueId: 'uniqueId',
         });
 
@@ -27,21 +27,48 @@ describe('process message', () => {
             ['email1@example.com', 'email2@example.com'],
             ['email3@example.com', 'email4@example.com'],
             ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
+            undefined,
             'subject',
-            'body',
-            'uniqueId'
+            'html',
+            undefined,
+            undefined
+        );
+    });
+
+    it('should map message with templateId and data', async () => {
+        await processMessage({
+            toAddresses: ['email1@example.com', 'email2@example.com'],
+            ccAddresses: ['email3@example.com', 'email4@example.com'],
+            bccAddresses: ['email5@example.com', 'email6@example.com'],
+            data: [{ key: 'NAME', value: 'Paul' }],
+            templateId: 'templateId',
+            uniqueId: 'uniqueId',
+        });
+
+        expect(sendEmail).toBeCalledTimes(1);
+        expect(sendEmail).toBeCalledWith(
+            ['email1@example.com', 'email2@example.com'],
+            ['email3@example.com', 'email4@example.com'],
+            ['email5@example.com', 'email6@example.com'],
+            'uniqueId',
+            undefined,
+            undefined,
+            undefined,
+            'templateId',
+            [{ key: 'NAME', value: 'Paul' }]
         );
     });
 
     it('should convert null emails to empty array', async () => {
         await processMessage({
             subject: 'subject',
-            body: 'body',
+            html: 'html',
             uniqueId: 'uniqueId',
         });
 
         expect(sendEmail).toBeCalledTimes(1);
-        expect(sendEmail).toBeCalledWith([], [], [], 'subject', 'body', 'uniqueId');
+        expect(sendEmail).toBeCalledWith([], [], [], 'uniqueId', undefined, 'subject', 'html', undefined, undefined);
     });
 
     it('should validate all email addresses', async () => {
@@ -50,7 +77,7 @@ describe('process message', () => {
             ccAddresses: ['email3@example.com', 'email4@example.com'],
             bccAddresses: ['email5@example.com', 'email6@example.com'],
             subject: 'subject',
-            body: 'body',
+            html: 'html',
             uniqueId: 'uniqueId',
         });
 
@@ -63,13 +90,13 @@ describe('process message', () => {
     });
 
     describe('record email', () => {
-        it('should record email', async () => {
+        it('should record email with subject and html', async () => {
             await processMessage({
                 toAddresses: ['email1@example.com', 'email2@example.com'],
                 ccAddresses: ['email3@example.com', 'email4@example.com'],
                 bccAddresses: ['email5@example.com', 'email6@example.com'],
                 subject: 'subject',
-                body: 'body',
+                html: 'html',
                 uniqueId: 'uniqueId',
             });
 
@@ -78,9 +105,34 @@ describe('process message', () => {
                 ['email1@example.com', 'email2@example.com'],
                 ['email3@example.com', 'email4@example.com'],
                 ['email5@example.com', 'email6@example.com'],
+                'uniqueId',
                 'subject',
-                'body',
-                'uniqueId'
+                'html',
+                undefined,
+                undefined
+            );
+        });
+
+        it('should record email with templateId and data', async () => {
+            await processMessage({
+                toAddresses: ['email1@example.com', 'email2@example.com'],
+                ccAddresses: ['email3@example.com', 'email4@example.com'],
+                bccAddresses: ['email5@example.com', 'email6@example.com'],
+                templateId: 'templateId',
+                data: [{ key: 'NAME', value: 'PAUL' }],
+                uniqueId: 'uniqueId',
+            });
+
+            expect(recordEmail).toBeCalledTimes(1);
+            expect(recordEmail).toBeCalledWith(
+                ['email1@example.com', 'email2@example.com'],
+                ['email3@example.com', 'email4@example.com'],
+                ['email5@example.com', 'email6@example.com'],
+                'uniqueId',
+                undefined,
+                undefined,
+                'templateId',
+                [{ key: 'NAME', value: 'PAUL' }]
             );
         });
 
@@ -93,7 +145,7 @@ describe('process message', () => {
                 ccAddresses: ['email3@example.com', 'email4@example.com'],
                 bccAddresses: ['email5@example.com', 'email6@example.com'],
                 subject: 'subject',
-                body: 'body',
+                html: 'html',
                 uniqueId: 'uniqueId',
             });
 
@@ -113,7 +165,7 @@ describe('process message', () => {
                     ccAddresses: ['email3@example.com', 'email4@example.com'],
                     bccAddresses: ['email5@example.com', 'email6@example.com'],
                     subject: 'subject',
-                    body: 'body',
+                    html: 'html',
                     uniqueId: 'uniqueId',
                 });
             } catch (error: any) {
