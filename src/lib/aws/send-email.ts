@@ -8,8 +8,12 @@ import { maskEmailAddresses } from '../email-mask';
 import { render, Data as EjsData } from 'ejs';
 import { Data } from '../../request';
 
+import { getObject } from '../s3';
+
 const SMTP_FROM = process.env.SMTP_FROM as string;
 const AWS_REGION = process.env.AWS_REGION as string;
+const TEMPLATE_BUCKET_NAME = process.env.TEMPLATE_BUCKET_NAME as string;
+const TEMPLATE_BUCKET_PATH = process.env.TEMPLATE_BUCKET_PATH as string;
 
 const ses = new aws.SES({
     apiVersion: '2010-12-01',
@@ -54,11 +58,14 @@ export const sendEmail = async (
 
 const buildTemplate = async (templateId: string, data?: Data[]): Promise<string> => {
     const template = await getTemplate(templateId);
-    const context = {} as EjsData;
-    data?.forEach((item) => (context[item.key] = item.value));
+    const context = data?.reduce((ctx, item) => ({ ...ctx, [item.key]: item.value }), {} as EjsData);
     return render(template, context);
 };
 
 const getTemplate = async (templateId: string): Promise<string> => {
-    return '<h1>Hello <%= user.name %></h1><p>Age: <%= user.age %> </p>';
+    const template = await getObject(TEMPLATE_BUCKET_NAME, `${TEMPLATE_BUCKET_PATH}/${templateId}`);
+    if (!template) {
+        throw new Error(`Unable to get template for ID ${templateId} from ${TEMPLATE_BUCKET_NAME}/${TEMPLATE_BUCKET_PATH}.`);
+    }
+    return template;
 };
