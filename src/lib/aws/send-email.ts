@@ -8,7 +8,7 @@ import { maskEmailAddresses } from '../email-mask';
 import { render, Data as EjsData } from 'ejs';
 import { Data } from '../../request';
 
-import { getObject } from '../s3';
+import { getS3Object } from '../s3';
 
 const SMTP_FROM = process.env.SMTP_FROM as string;
 const AWS_REGION = process.env.AWS_REGION as string;
@@ -63,7 +63,7 @@ const buildTemplate = async (templateId: string, data?: Data[]): Promise<string>
 };
 
 const getTemplate = async (templateId: string): Promise<string> => {
-    const template = await getObject(TEMPLATE_BUCKET_NAME, `${TEMPLATE_BUCKET_PATH}/${templateId}`);
+    const template = await getS3Object(TEMPLATE_BUCKET_NAME, `${TEMPLATE_BUCKET_PATH}/${templateId}`);
     if (!template) {
         throw new Error(`Unable to get template for ID ${templateId} from ${TEMPLATE_BUCKET_NAME}/${TEMPLATE_BUCKET_PATH}.`);
     }
