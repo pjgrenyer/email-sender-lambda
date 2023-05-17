@@ -1,16 +1,30 @@
+import { Pool } from 'pg';
 import { maskEmailAddresses } from './lib/email-mask';
 import logger from './lib/logger';
 import { processMessage } from './process-message';
 import { Message, Request } from './request';
 
+const connectionString = process.env.DB_URL as string;
+
 const handler = async (event: Request) => {
     try {
-        for (const record of event.Records) {
-            const message: Message = JSON.parse(record?.body);
-            message.uniqueId = message.uniqueId ?? record?.messageId;
-            logger.debug(`Message received: ${record?.messageId}`, { context: 'handler', messageId: record?.messageId, body: maskMessage(message) });
-            await processMessage(message);
+        const pool = new Pool({
+            connectionString,
+        });
+
+        try {
+            const res = await pool.query('SELECT $1::text as message', ['Hello world!']);
+            logger.info(res.rows[0].message);
+        } finally {
+            await pool.end();
         }
+
+        // for (const record of event.Records) {
+        //     const message: Message = JSON.parse(record?.body);
+        //     message.uniqueId = message.uniqueId ?? record?.messageId;
+        //     logger.debug(`Message received: ${record?.messageId}`, { context: 'handler', messageId: record?.messageId, body: maskMessage(message) });
+        //     await processMessage(message);
+        // }
 
         return { success: true };
     } catch (error: any) {
