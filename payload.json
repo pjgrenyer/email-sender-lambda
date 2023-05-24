@@ -1,0 +1,8 @@
+{
+    "Records": [
+        {
+            "messageId": "manual-invoke",
+            "body": "{\"toAddresses\": [\"paul.grenyer@gmail.com\"],\"ccAddresses\": [],\"bccAddresses\": [],\"subject\": \"Test Email\",\"html\": \"<h1>Test Email</h1>\", \"templateId\": \"age_and_name.html\", \"data\": [{\"key\":\"user\", \"value\": { \"name\": \"Charlotte\", \"age\":44}}], \"uniqueId\": \"uniqueId\"}"
+        }
+    ]
+}

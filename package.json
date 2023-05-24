@@ -1,0 +1,71 @@
+{
+    "name": "email-sender-lambda",
+    "version": "1.0.0",
+    "description": "A lambda which sends emails",
+    "main": "index.js",
+    "scripts": {
+        "prepare": "husky install",
+        "build": "rimraf dist && tsc",
+        "dev": "npm run build && node dist/index.js",
+        "test": "jest --coverage --testPathIgnorePatterns='integration.*'",
+        "test-integration": "jest --testRegex='integration.*'",
+        "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts' './*.js' './*.json' '!./package-lock.json'",
+        "lint": "eslint . --ext .ts",
+        "package": "rimraf email-sender-lambda.zip && npm run build && npm ci --omit=dev && cd dist && zip -r ../email-sender-lambda.zip . && cd .. && zip email-sender-lambda.zip package.json && zip email-sender-lambda.zip -r node_modules",
+        "upload": "aws s3 cp email-sender-lambda.zip s3://email-sender-lambda/email-sender-lambda.zip",
+        "publish": "aws lambda update-function-code --function-name email-sender-lambda --s3-bucket email-sender-lambda --s3-key email-sender-lambda.zip",
+        "package-upload-publish": "npm run package && npm run upload && npm run publish",
+        "invoke": "aws lambda invoke --function-name email-sender-lambda --payload file://payload.json --cli-binary-format raw-in-base64-out response.json && more response.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pjgrenyer/node-typescript-template.git"
+    },
+    "keywords": [
+        "node",
+        "typescript"
+    ],
+    "author": "Paul Grenyer",
+    "license": "SEE LICENSE IN LICENSE",
+    "bugs": {
+        "url": "https://github.com/pjgrenyer/node-typescript-template/issues"
+    },
+    "homepage": "https://github.com/pjgrenyer/node-typescript-template#readme",
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.332.0",
+        "@aws-sdk/client-s3": "^3.332.0",
+        "@aws-sdk/client-ses": "^3.328.0",
+        "@aws-sdk/credential-provider-node": "^3.328.0",
+        "dotenv": "^16.0.3",
+        "ejs": "^3.1.9",
+        "husky": "^8.0.3",
+        "joi": "^17.9.2",
+        "nodemailer": "^6.9.1",
+        "tripitaka": "^3.0.6",
+        "tripitaka-datadog": "^1.0.4",
+        "tripitaka-sumologic": "^1.0.2",
+        "typescript": "^5.0.4",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "@babel/preset-env": "^7.21.4",
+        "@babel/preset-typescript": "^7.21.4",
+        "@types/ejs": "^3.1.2",
+        "@types/jest": "^29.5.1",
+        "@types/node": "^20.1.0",
+        "@types/nodemailer": "^6.4.7",
+        "@types/supertest": "^2.0.12",
+        "@types/uuid": "^9.0.1",
+        "@typescript-eslint/eslint-plugin": "^5.59.1",
+        "@typescript-eslint/parser": "^5.59.1",
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "eslint": "^8.39.0",
+        "jest": "^29.5.0",
+        "jest-mock-extended": "^3.0.4",
+        "nock": "^13.3.1",
+        "prettier": "^2.8.8",
+        "rimraf": "^5.0.0",
+        "supertest": "^6.3.3"
+    }
+}
