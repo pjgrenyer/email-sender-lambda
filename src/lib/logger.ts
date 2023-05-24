@@ -3,15 +3,9 @@ dotenv.config();
 
 import { Level, Logger, TransportFactory, transports, processors, ProcessorFactory } from 'tripitaka';
 import { datadogProcessor, datadogTransport } from 'tripitaka-datadog';
-import { sumoLogicTransport } from 'tripitaka-sumologic';
-import { sumoLogicProcessor } from 'tripitaka-sumologic';
-import { v4 } from 'uuid';
 const { context, timestamp, json, human } = processors;
 
 const logLevel = Level.lookup(process.env.LOG_LEVEL?.toUpperCase() as string);
-
-// eslint-disable-next-line no-console
-const onError = (error: any) => console.log(`Sumo Error! ${error}`);
 
 const buildProcessors = (): Array<ProcessorFactory> => {
     const ps: Array<ProcessorFactory> = [context(), timestamp()];
@@ -19,8 +13,6 @@ const buildProcessors = (): Array<ProcessorFactory> => {
     /* istanbul ignore next */
     if (process.env.NODE_ENV === 'production' && process.env.DATADOG_API_KEY) {
         ps.push(datadogProcessor());
-    } else if (process.env.NODE_ENV === 'production' && process.env.SUMO_ENDPOINT) {
-        ps.push(sumoLogicProcessor());
     } else {
         ps.push(process.env.NODE_ENV === 'production' ? json() : human());
     }
@@ -43,22 +35,6 @@ const buildTransports = (): Array<TransportFactory> => {
                 intakeRegion: 'eu',
                 threshold: logLevel,
             })
-        );
-        /* istanbul ignore next */
-    } else if (process.env.NODE_ENV === 'production' && process.env.SUMO_ENDPOINT) {
-        ts.push(
-            sumoLogicTransport(
-                {
-                    endpoint: process.env.SUMO_ENDPOINT,
-                    sourceName: process.env.SUMO_SERVICE_NAME,
-                    clientUrl: process.env.SUMO_CLIENT_URL,
-                    hostName: process.env.SUMO_HOST_NAME,
-                    sourceCategory: process.env.SUMO_SOURCE_CATEGORY,
-                    sessionKey: v4(),
-                    onError,
-                },
-                { threshold: logLevel }
-            )
         );
     }
 
