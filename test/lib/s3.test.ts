@@ -1,4 +1,3 @@
-import exp from 'constants';
 import { getS3Object } from './../../src/lib/s3';
 
 const mockSend = jest.fn();
