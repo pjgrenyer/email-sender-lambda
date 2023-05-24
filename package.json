@@ -32,20 +32,15 @@
     },
     "homepage": "https://github.com/pjgrenyer/node-typescript-template#readme",
     "dependencies": {
-        "@aws-sdk/client-dynamodb": "^3.332.0",
-        "@aws-sdk/client-s3": "^3.332.0",
-        "@aws-sdk/client-ses": "^3.328.0",
+        "@aws-sdk/client-s3": "^3.338.0",
         "@aws-sdk/credential-provider-node": "^3.328.0",
         "dotenv": "^16.0.3",
         "ejs": "^3.1.9",
         "husky": "^8.0.3",
         "joi": "^17.9.2",
-        "nodemailer": "^6.9.1",
         "tripitaka": "^3.0.6",
         "tripitaka-datadog": "^1.0.4",
-        "tripitaka-sumologic": "^1.0.2",
-        "typescript": "^5.0.4",
-        "uuid": "^9.0.0"
+        "typescript": "^5.0.4"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.21.4",
@@ -53,9 +48,7 @@
         "@types/ejs": "^3.1.2",
         "@types/jest": "^29.5.1",
         "@types/node": "^20.1.0",
-        "@types/nodemailer": "^6.4.7",
         "@types/supertest": "^2.0.12",
-        "@types/uuid": "^9.0.1",
         "@typescript-eslint/eslint-plugin": "^5.59.1",
         "@typescript-eslint/parser": "^5.59.1",
         "babel-cli": "^6.26.0",
