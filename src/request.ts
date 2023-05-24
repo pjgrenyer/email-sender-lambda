@@ -1,7 +1,6 @@
 export interface Data {
     key: string;
     value: any;
-    lookupId?: string;
 }
 
 export interface Message {
