@@ -1,16 +1,21 @@
+import { sendEmail } from './lib/aws/send-email';
+import { recordEmail, recordEmailResponse } from './lib/recorder';
 import { validateEmailAddresses } from './lib/validate-email-addresses';
 import { Message } from './request';
 
 export const processMessage = async (message: Message) => {
-    const toAddresses: string[] = [];
+    const undefinedFromAddress = undefined;
+    const toAddresses = message.toAddresses ?? [];
+    const ccAddresses = message.ccAddresses ?? [];
+    const bccAddresses = message.bccAddresses ?? [];
     const uniqueId = message.uniqueId;
-    // try {
-    // TODO: Record Email
-    validateEmailAddresses(toAddresses, [], []);
-    // TODO: Send Email
-    // TODO: Record email success and response
-    // } catch (error: any) {
-    //     // TODO: Record email failure and response
-    //     throw error;
-    // }
+    try {
+        await recordEmail(toAddresses, ccAddresses, bccAddresses, uniqueId, message.subject, message.html, message.templateId, message.data);
+        validateEmailAddresses(toAddresses, ccAddresses, bccAddresses);
+        const response = await sendEmail(toAddresses, ccAddresses, bccAddresses, uniqueId, undefinedFromAddress, message.subject, message?.html, message.templateId, message.data);
+        await recordEmailResponse(uniqueId, response);
+    } catch (error: any) {
+        await recordEmailResponse(uniqueId, JSON.stringify(error));
+        throw error;
+    }
 };
