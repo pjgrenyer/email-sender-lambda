@@ -134,5 +134,5 @@ dist
 
 # Misc
 **/response.json
-email-sender-lambda.zip
+*.zip
 .test.env

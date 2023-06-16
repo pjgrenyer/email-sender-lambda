@@ -16,7 +16,7 @@ resource "aws_lambda_function" "email_sender_lambda" {
   s3_key        = aws_s3_object.email_sender_lambda.key
   function_name = "email-sender-lambda"
   role          = aws_iam_role.lambda.arn
-  handler       = "index.handler"
+  handler       = "dist/index.handler"
   timeout       = var.lambda_timeout
   publish       = true
 
