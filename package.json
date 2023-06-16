@@ -70,6 +70,16 @@
         "supertest": "^6.3.3"
     },
     "repackZipConfig": {
-        "excludes": [ "coverage/**", "infrastructure/**", "src/**", "test/**", "*.json", "*.js", "*.md", "LICENSE", "*.zip" ]
+        "excludes": [
+            "coverage/**",
+            "infrastructure/**",
+            "src/**",
+            "test/**",
+            "*.json",
+            "*.js",
+            "*.md",
+            "LICENSE",
+            "*.zip"
+        ]
     }
 }
